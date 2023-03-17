@@ -18,10 +18,10 @@
             <input type="checkbox" v-model="selectAll">
             Seleccionar todo
         </label>
-        <div v-for="(attraction, index) in myThemes" :key="index">
+        <div v-for="(tema, index) in myThemes" :key="index">
             <label class="label">
-            <input type="checkbox" class="left" :value="attraction.id" v-model="selectedThemes">
-            {{ attraction.tema}}
+                <input type="checkbox" class="left" :value="tema.tema" v-model="selectedThemes[tema.tema]">
+                {{ tema.tema}}
             </label>
         </div>
     </div>
@@ -31,6 +31,7 @@
   </template>
 
     <script>
+    import moment from 'moment'
     export default {
         name : 'FilterThemes',
         emits: ['update-view-table', 'data-send'],
@@ -43,19 +44,12 @@
         },
         data() {
             return {
-                startDate: '',
-                endDate: '',
+                startDate: moment().format('YYYY-MM-DD'),
+                endDate: moment().format('YYYY-MM-DD'),
                 selectAll: false,
                 viewTable: false,
-                selectedThemes: [],
-                themes: [
-                    "Parque de Atracciones de Madrid",
-                    "PARQUE WARNER",
-                    "AQUOPOLIS",
-                    "Selwo Marina",
-                    "Selwo Aventura",
-                    "TELEFÉRICO BENALMÁDENA"
-                ]
+                selectedThemes: {},
+                themes: []
             }
         },
         computed: {
@@ -68,57 +62,54 @@
         },
         watch: {
             selectAll: function(value) {
-                if (value) {
-                    this.selectedThemes = [...this.themes];
-                } else {
-                    this.selectedThemes = [];
+                if (value)
+                {
+                    this.selectedThemes = {};
+                    for (let i=0;i<Object.keys(this.myThemes).length;i++)
+                    {
+                        this.selectedThemes[this.myThemes[i].tema] = true;
+                    }
+
+                    return;
                 }
+
+                this.selectedThemes = {};
             }
         },
         methods: {
             submitForm() {
                 if (this.validarDatos()) {
                     // Hacer algo con los datos enviados
-                    
+
                     this.$emit('update-view-table', this.viewTable);
                     this.$emit('data-send', {
                       startDate: this.startDate,
                       endDate: this.endDate,
                       selectedThemes: this.selectedThemes
                     });
-                    // console.log('Datos enviados:', this.startDate, this.endDate, this.selectedThemes);
                 }
-                },
-                validarDatos() {
-                if (this.startDate && this.endDate && this.selectedThemes.length > 0) {
-                    this.viewTable = true;
-                }
-                if (this.fechaInicialObj > this.fechaFinalObj) {
-                  const fechaInicio = document.getElementById('start-date');
-                  const fechaFinal = document.getElementById('end-date');
-                  fechaInicio.setAttribute('class', 'error');
-                  fechaFinal.setAttribute('class', 'error');
-                  console.log('La fecha inicial no puede ser mayor a la fecha final');
-                  return false;
-                } else {
-                  const fechaInicio = document.getElementById('start-date');
-                  const fechaFinal = document.getElementById('end-date');
-                  fechaInicio.setAttribute('class', 'form-control');
-                  fechaFinal.setAttribute('class', 'form-control');
-                }
+            },
+            validarDatos() {
+                    if (this.startDate && this.endDate) {
+                        this.viewTable = true;
+                    }
 
-                if(this.selectedThemes.length === 0) {
-                    const label = document.querySelectorAll('.label');
-                    label.forEach((element) => {
-                      element.style.color = 'red';
-                    });
-                    // label.style.color = 'red';
-                    console.log("faltan datos");
-                    this.viewTable = false;
-                    this.$emit('updateViewTable', this.viewTable);
-                    return false;
-                }
-                return true;
+                    if (this.fechaInicialObj > this.fechaFinalObj) {
+                      const fechaInicio = document.getElementById('start-date');
+                      const fechaFinal = document.getElementById('end-date');
+                      fechaInicio.setAttribute('class', 'error');
+                      fechaFinal.setAttribute('class', 'error');
+                      console.log('La fecha inicial no puede ser mayor a la fecha final');
+                      return false;
+                    }
+                    else {
+                      const fechaInicio = document.getElementById('start-date');
+                      const fechaFinal = document.getElementById('end-date');
+                      fechaInicio.setAttribute('class', 'form-control');
+                      fechaFinal.setAttribute('class', 'form-control');
+                    }
+
+                    return true;
             },
         },
     }

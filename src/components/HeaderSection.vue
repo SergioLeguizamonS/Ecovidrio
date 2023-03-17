@@ -26,6 +26,7 @@ header {
   background-color: #FFFFFF;
   color: #fff;
   padding: 10px;
+  border-right: 1px solid #CCCCCC;
 }
 
 .logo img {

@@ -1,10 +1,13 @@
 <template>
   <div v-if="viewApp">
     <HeaderSection/>
+
     <FilterTable
       @search-send="searchData"
+      @clear-rows="clearRows"
       :myThemes="myThemes"
       :myRows="myRows"
+      :empty="empty"
     />
   </div>
   <div v-else class="loader">
@@ -32,37 +35,45 @@ export default {
       myRows: [],
       startDate: '',
       endDate: '',
-      selectedThemes: []
+      selectedThemes: [],
+      empty:false
     }
   },
   created() {
       this.sendData(this.id);
   },
   methods: {
-    sendData(id) {
-      axios.post('http://localhost/funcion.php', {
-        id: id
+    clearRows($event){
+       if($event) this.myRows = []
+    },
+    sendData(subclient_id) {
+      axios.post('https://epservices.eprensa.com/Parques_reunidos/getTemas.php', {
+        subclient_id: subclient_id
       }).then(response => {
         const data = response.data;
-        const myArray = data.map(item => ({ id: item.id, tema: item.tema }));
-        // console.log(myArray);
+        const temas = data.map(item => ({ id: item.id, tema: item.tema }));
+
         this.viewApp = true;
-        this.myThemes = myArray;
-      }).catch(error => {
+        this.myThemes = temas;
+      })
+      .catch(error => {
         console.log(error);
       });
     }, 
     searchData(datos) {
-      axios.post('http://localhost/getCompanies.php', {
-        id: datos.selectedThemes,
+      this.myRows = [];
+      this.empty = false;
+
+      axios.post('https://epservices.eprensa.com/Parques_reunidos/getCompanies.php', {
+        selectedTemas: datos.selectedThemes,
         startDate: datos.endDate,
         endDate: datos.endDate
       }).then(response => {
         const data = response.data;
         this.goTable = true;
         this.myRows = data;
-        console.log(data);
-        // const myArray = data.map(item => ({ id: item.id, tema: item.tema }));
+        this.empty = !this.myRows.length;
+
       }).catch(error => {
         console.log(error);
       });

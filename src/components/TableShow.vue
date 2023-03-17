@@ -9,10 +9,11 @@
             <th>Medio</th>
             <th>Titular</th>
             <th>URL</th>
+            <th>Tema</th>
             <th>Soporte</th>
             <th>Categoría</th>
-            <th>Valor Publicitario</th>
-            <th>Mención en el titular</th>
+            <th>VP</th>
+            <th>Titular</th>
             <th>Relevancia</th>
             <th>Fotografía</th>
             <th>Nuevo VC</th>
@@ -23,7 +24,8 @@
             <td>{{ item.fulldate }}</td>
             <td>{{ item.paper }}</td>
             <td>{{ item.title }}</td>
-            <td>{{ item.article_url}}</td>
+            <td><a href="item.article_url">{{ item.article_url}}</a></td>
+            <td>{{ item.tema}}</td>
             <td>{{ item.p_or_d }}</td>
             <td>{{ item.categoria }}</td>
             <td>{{ item.vp }}</td>
@@ -90,7 +92,6 @@ export default {
         overflow-x: auto;
         margin: 1rem 0;
         background: #FFFFFF;
-        border-radius: 15px;
     }
     
     table {

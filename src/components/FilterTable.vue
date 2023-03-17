@@ -1,5 +1,5 @@
 <template>
-    <div class="layer_principal" v-if="!viewTable">
+    <div class="layer_principal">
         <div class="filter">
             <FilterThemes 
                 @update-view-table="viewTable = $event"
@@ -9,35 +9,24 @@
             </FilterThemes>
         </div>
         
-        <div v-if="!viewTable" class="table">
+        <div v-if="!viewTable||empty" class="table">
             <div class="validate">
                 <img src="../assets/idea.png" alt="idea">
                 <h2>No hay datos que mostrar.</h2>
                 <h3>Selecciona un rango de fechas y temas para validar.</h3>
             </div>
         </div>
-
-        <!-- <div v-if="myRows.length === 0" class="table">
-            no hay datos para mostrar
-
-        </div> -->
-        <!-- <div v-else class="table">
-            <div class="validate">
-                <img src="../assets/idea.png" alt="idea">
-                <h2>No hay datos que mostrar.</h2>
-                <h3>Selecciona un rango de fechas y temas para validar.</h3>
+        <div v-else class="layer_table">
+            <div v-if="myRows.length">
+                <TableShow @update-view-table="updateVueTable" :myRows="myRows"/>
             </div>
-        </div> -->
+            <div class="table-container" v-else>
+                <div class="loader">
+                    <img class="loading" src="../assets/spinner.gif" alt="loading">
+                </div>
+            </div>
+        </div>
     </div>
-    <div v-else class="layer_table">
-        <TableShow
-            @update-view-table="viewTable = $event"
-            :myRows="myRows"
-        />
-    </div>
-    <!-- <div v-else>
-        no hay data en la consulta
-    </div> -->
 </template>
 
 <script>
@@ -54,6 +43,9 @@ export default {
     },
     myRows: {
       type: Array
+    },
+    empty: {
+        type: Boolean
     }
   },
   components: {
@@ -69,10 +61,11 @@ export default {
     }
   },
   methods: {
+    updateVueTable($event){
+        this.viewTable = $event
+        this.$emit('clear-rows',true);
+    },
     consultarData(datos) {
-        console.log("llego: " + datos.startDate +' '+ '00:00:00');
-        console.log("llego: " + datos.endDate +' '+ '23:59:59');
-        console.log("llego: " + datos.selectedThemes);
         this.$emit('search-send', {
             startDate: datos.startDate,
             endDate: datos.endDate,
@@ -95,7 +88,7 @@ export default {
         left: 0;
         right: 0;
         margin: 0 auto;
-        width: 85%;
+        width: 99%;
         height: auto;
         /* background-color: red; */
         margin-top: 30px;
@@ -112,15 +105,16 @@ export default {
         /* background-color: red; */
         margin-top: 30px;
         display: flex;
+        margin-left: 20px;
     }
     .filter {
-        width: 50%;
+        width: 30%;
         height: auto;
         background: #FFFFFF;
         border-right: 1px solid #CCCCCC;
     }
     .table {
-        width: 50%;
+        width: 70%;
         height: auto;
         background: #FFFFFF;
         display: flex;
