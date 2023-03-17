@@ -2,6 +2,7 @@
     <div class="table-container">
         <img class="excel" src="../assets/excel.png" alt="download" @click="descargarExcel">
         <img class="close" src="../assets/cerrar.png" alt="close" @click="closed">
+        <p>Total de noticias: ({{ this.myRows.length }})</p>
         <table>
         <thead>
           <tr>
@@ -69,14 +70,28 @@ export default {
                 nuevoVC: "No",
                 },
             ],
+            thColumns: [
+                'Fecha',
+                'Titular',
+                'Tema',
+                'Medio',
+                'Url',
+                'Soporte',
+                'Categoría',
+                'Valor Publicitario',
+                'En fotografía',
+                'Relevancia',
+                'En titular',
+                'Valor Comunicación'
+            ]
         };
     },
     methods: {
         descargarExcel() {
-        const worksheet = XLSX.utils.json_to_sheet(this.myRows);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Datos');
-        XLSX.writeFile(workbook, 'datos.xlsx');
+            const worksheet = XLSX.utils.aoa_to_sheet([this.thColumns, ...this.myRows.map(Object.values)]);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Datos');
+            XLSX.writeFile(workbook, 'datos.xlsx');
         },
         closed() {
             this.$emit('update-view-table', false);
@@ -90,7 +105,6 @@ export default {
         width: 100%;
         max-height: 520px;
         overflow-x: auto;
-        margin: 1rem 0;
         background: #FFFFFF;
     }
     
@@ -127,15 +141,15 @@ export default {
     }
     .excel {
         cursor: pointer;
-        margin-left: 15px;
-        margin-top: 20px;
-        width: 35px;
+        margin-left: 4px;
+        margin-top: 12px;
+        width: 30px;
     }
     .close {
         position: absolute;
-        right: 15px;
-        top: 40px;
-        width: 35px;
+        right: 25px;
+        top: 30px;
+        width: 30px;
         cursor: pointer;
     }
 </style>
