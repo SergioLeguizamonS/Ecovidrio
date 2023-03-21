@@ -66,7 +66,7 @@ export default {
 
       axios.post('https://epservices.eprensa.com/Parques_reunidos/getCompanies.php', {
         selectedTemas: datos.selectedThemes,
-        startDate: datos.endDate,
+        startDate: datos.startDate,
         endDate: datos.endDate
       }).then(response => {
         const data = response.data;
