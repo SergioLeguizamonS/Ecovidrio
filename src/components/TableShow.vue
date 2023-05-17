@@ -31,7 +31,7 @@
                 <td>{{ item.fulldate }}</td>
                 <td>{{ item.paper }}</td>
                 <td>{{ item.title }}</td>
-                <td><a href="item.article_url">{{ item.article_url}}</a></td>
+                <td><a :href="item.article_url" target="_blank">{{ item.article_url}}</a></td>
                 <td>{{ item.tema}}</td>
                 <td>{{ item.p_or_d }}</td>
                 <td>{{ item.categoria }}</td>
@@ -76,30 +76,25 @@ export default {
                 nuevoVC: "No",
                 },
             ],
+            thColumns: [
+                'Fecha',
+                'Titular',
+                'Tema',
+                'Medio',
+                'Url',
+                'Soporte',
+                'Categoría',
+                'Valor Publicitario',
+                'En fotografía',
+                'Relevancia',
+                'En titular',
+                'Valor Comunicación'
+            ]
         };
     },
     methods: {
         descargarExcel() {
-            let excelRows = [];
-
-            for (let i=0;i<this.myRows.length;i++)
-            {
-                excelRows.push({
-                    'Fecha': this.myRows[i].fulldate,
-                    'Titular': this.myRows[i].title,
-                    'Medio': this.myRows[i].paper,
-                    'Url': this.myRows[i].article_url,
-                    'Soporte': this.myRows[i].p_or_d,
-                    'Categoría': this.myRows[i].categoria,
-                    'Valor Publicitario': this.myRows[i].vp,
-                    'En fotografía': this.myRows[i].is_in_picture,
-                    'Relevancia': this.myRows[i].custom_relevancia,
-                    'En titular': this.myRows[i].is_in_title,
-                    'Valor Comunicación': this.myRows[i].vc
-                })
-            }
-
-            const worksheet = XLSX.utils.json_to_sheet(excelRows);
+            const worksheet = XLSX.utils.aoa_to_sheet([this.thColumns, ...this.myRows.map(Object.values)]);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, 'Datos');
             XLSX.writeFile(workbook, 'datos.xlsx');
