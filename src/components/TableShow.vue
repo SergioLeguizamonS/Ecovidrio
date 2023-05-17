@@ -9,6 +9,7 @@
             </b>
         </div>
         <img class="close" src="../assets/cerrar.png" alt="close" @click="closed">
+        <p>Total de noticias: ({{ this.myRows.length }})</p>
         <table>
             <thead>
               <tr>
@@ -116,7 +117,6 @@ export default {
         width: 100%;
         max-height: 520px;
         overflow-x: auto;
-        margin: 1rem 0;
         background: #FFFFFF;
     }
     
@@ -167,9 +167,9 @@ export default {
     }
     .close {
         position: absolute;
-        right: 15px;
-        top: 40px;
-        width: 35px;
+        right: 25px;
+        top: 30px;
+        width: 30px;
         cursor: pointer;
     }
 </style>

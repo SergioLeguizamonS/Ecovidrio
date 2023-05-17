@@ -9,7 +9,23 @@
             </FilterThemes>
         </div>
         
-        <div v-if="!viewTable||empty" class="table">
+        <div v-if="!viewTable||empty" class="table center">
+            <div class="validate">
+                <img src="../assets/idea.png" alt="idea">
+                <h2>No hay datos que mostrar.</h2>
+                <h3>Selecciona un rango de fechas y temas para validar.</h3>
+            </div>
+        </div>
+        <div v-else class="table">
+            <div v-if="myRows.length">
+                <TableShow @update-view-table="updateVueTable" :myRows="myRows"/>
+            </div>
+            <div v-else class="center">
+                <img class="loading" src="../assets/spinner.gif" alt="loading">
+            </div>                
+        </div>
+
+        <!-- <div v-if="!viewTable||empty" class="table">
             <div class="validate">
                 <img src="../assets/idea.png" alt="idea">
                 <h2>No hay datos que mostrar.</h2>
@@ -25,7 +41,7 @@
                     <img class="loading" src="../assets/spinner.gif" alt="loading">
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -88,7 +104,7 @@ export default {
         left: 0;
         right: 0;
         margin: 0 auto;
-        width: 99%;
+        width: 98%;
         height: auto;
         /* background-color: red; */
         margin-top: 30px;
@@ -105,7 +121,6 @@ export default {
         /* background-color: red; */
         margin-top: 30px;
         display: flex;
-        margin-left: 20px;
     }
     .filter {
         width: 30%;
@@ -117,6 +132,9 @@ export default {
         width: 70%;
         height: auto;
         background: #FFFFFF;
+        padding: 10px;
+    }
+    .center {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -130,10 +148,11 @@ export default {
             width: 100%;
         }
         .table {
-            width: 100%;
-            height: 300px;
+            width: 96%;
+            height: auto;
             position: absolute;
             top: 520px;
+            margin-top: 45px;
         }
     }
 </style>

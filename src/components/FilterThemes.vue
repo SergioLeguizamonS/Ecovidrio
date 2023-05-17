@@ -63,7 +63,7 @@
         watch: {
             selectAll: function(value) {
                 if (value)
-                {
+                { 
                     this.selectedThemes = {};
                     for (let i=0;i<Object.keys(this.myThemes).length;i++)
                     {
@@ -107,6 +107,19 @@
                       const fechaFinal = document.getElementById('end-date');
                       fechaInicio.setAttribute('class', 'form-control');
                       fechaFinal.setAttribute('class', 'form-control');
+                    }
+
+                    if (Object.values(this.selectedThemes).includes(true)) {
+                      const label = document.querySelectorAll('.label');
+                      label.forEach((element) => {
+                        element.style.color = '#000000';
+                      });
+                    } else {
+                      const label = document.querySelectorAll('.label');
+                      label.forEach((element) => {
+                        element.style.color = 'red';
+                      });
+                      return false;
                     }
 
                     return true;
