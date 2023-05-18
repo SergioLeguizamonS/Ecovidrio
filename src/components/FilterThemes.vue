@@ -114,13 +114,14 @@
                       label.forEach((element) => {
                         element.style.color = '#000000';
                       });
-                    } else {
-                      const label = document.querySelectorAll('.label');
-                      label.forEach((element) => {
-                        element.style.color = 'red';
-                      });
-                      return false;
-                    }
+                    } 
+                    // else {
+                    //   const label = document.querySelectorAll('.label');
+                    //   label.forEach((element) => {
+                    //     element.style.color = 'red';
+                    //   });
+                    //   return false;
+                    // }
 
                     return true;
             },

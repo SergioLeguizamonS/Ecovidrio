@@ -9,7 +9,7 @@
             </b>
         </div>
         <img class="close" src="../assets/cerrar.png" alt="close" @click="closed">
-        <p>Total de noticias: ({{ this.myRows.length }})</p>
+        <!-- <p>Total de noticias: ({{ this.myRows.length }})</p> -->
         <table>
             <thead>
               <tr>
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
 
 export default {
     name: 'TableShow',
@@ -94,12 +94,43 @@ export default {
         };
     },
     methods: {
-        descargarExcel() {
-            const worksheet = XLSX.utils.aoa_to_sheet([this.thColumns, ...this.myRows.map(Object.values)]);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, 'Datos');
-            XLSX.writeFile(workbook, 'datos.xlsx');
-        },
+        async descargarExcel() {
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet('Datos');
+
+    // Escribir los encabezados de columna
+    sheet.addRow(this.thColumns);
+
+    // Escribir los datos de las filas
+    this.myRows.forEach(item => {
+      sheet.addRow(Object.values(item));
+    });
+
+    // Agregar hipervínculos
+    const hyperlinkColumnIndex = 5;
+    this.myRows.forEach((item, rowIndex) => {
+      const cell = sheet.getCell(rowIndex + 2, hyperlinkColumnIndex);
+      const hyperlink = {
+        text: item.article_url,
+        hyperlink: item.article_url,
+        tooltip: 'Click to open link'
+      };
+      cell.value = hyperlink;
+    });
+
+    // Guardar el archivo Excel
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'datos.xlsx');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  },
+
         closed() {
             this.$emit('update-view-table', false);
         }   
