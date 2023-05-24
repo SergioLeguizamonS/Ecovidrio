@@ -95,43 +95,96 @@ export default {
     },
     methods: {
         async descargarExcel() {
-    const workbook = new ExcelJS.Workbook();
-    const sheet = workbook.addWorksheet('Datos');
+            const workbook = new ExcelJS.Workbook();
+            const sheet = workbook.addWorksheet('Datos');
 
-    // Escribir los encabezados de columna
-    sheet.addRow(this.thColumns);
+            // Escribir los encabezados de columna
+            sheet.addRow(this.thColumns);
 
-    // Escribir los datos de las filas
-    this.myRows.forEach(item => {
-      sheet.addRow(Object.values(item));
-    });
+            function formatNumberWithThousands(value) {
+            // Verificar si el valor es una cadena y si contiene solo caracteres numéricos y espacios en blanco
+            if (typeof value === 'string' && /^[0-9\s.]+$/.test(value)) {
+                // Remover los espacios en blanco y convertir la cadena a número
+                value = parseFloat(value.replace(/\s/g, ''));
+            }
+            return value;
+            }
 
-    // Agregar hipervínculos
-    const hyperlinkColumnIndex = 5;
-    this.myRows.forEach((item, rowIndex) => {
-      const cell = sheet.getCell(rowIndex + 2, hyperlinkColumnIndex);
-      const hyperlink = {
-        text: item.article_url,
-        hyperlink: item.article_url,
-        tooltip: 'Click to open link'
-      };
-      cell.value = hyperlink;
-    });
 
-    // Guardar el archivo Excel
-    const buffer = await workbook.xlsx.writeBuffer();
-    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'datos.xlsx');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  },
+            // Escribir los datos de las filas
+            this.myRows.forEach(item => {
 
-        closed() {
+            const rowData = Object.values(item).map(value => {
+                // Verificar si el valor es numérico y convertirlo a número si es necesario
+                if (typeof value === 'string' && /^\d+(\.\d+)?\s?€$/.test(value)) {
+                // Remover caracteres no numéricos y convertir el valor a número
+                const numericValue = value.replace(/[^\d.\s]|(?<=\d)\.(?=\d)|,/g, '').trim();
+                // Convertir el valor a número
+                const parsedValue = formatNumberWithThousands(numericValue);
+                return parsedValue;
+                }
+
+                if (typeof value === 'string' && /^(\d+(\.\d+)?|\d+,\d+)$/.test(value)) {
+                // Remover caracteres no numéricos y convertir el valor a número
+                const numericValue = value.replace(/[^\d.,]/g, '').replace(',', '.').trim();
+                // Convertir el valor a número
+                const parsedValue = formatNumberWithThousands(numericValue);
+                return parsedValue;
+                }
+
+                
+                return value;
+            });
+            sheet.addRow(rowData);
+            });
+
+            // Establecer formato de celda para los campos "Valor Publicitario" y "Valor Comunicación"
+            const vpColumnIndex = this.thColumns.indexOf('Valor Publicitario') + 1;
+            const vcColumnIndex = this.thColumns.indexOf('Valor Comunicación') + 1;
+            const rvColumnIndex = this.thColumns.indexOf('Relevancia') + 1;
+            sheet.getColumn(vpColumnIndex).numFmt = '#,##0 "€"';
+            sheet.getColumn(vcColumnIndex).numFmt = '#,##0 "€"';
+            sheet.getColumn(rvColumnIndex).numFmt = '0.0';
+
+
+            // Agregar hipervínculos url
+            const hyperlinkColumnIndex = 5;
+            this.myRows.forEach((item, rowIndex) => {
+                const cell = sheet.getCell(rowIndex + 2, hyperlinkColumnIndex);
+                const hyperlink = {
+                    text: item.article_url,
+                    hyperlink: item.article_url,
+                    tooltip: 'Click to open link'
+                };
+                cell.value = hyperlink;
+            });
+
+            // Agregar hipervínculos titulos
+            const hyperlinkColumnIndex2 = 2;
+            this.myRows.forEach((item, rowIndex) => {
+                const cell = sheet.getCell(rowIndex + 2, hyperlinkColumnIndex2);
+                const hyperlink = {
+                    text: item.title,
+                    hyperlink: item.article_url,
+                    tooltip: 'Click to open link'
+                };
+                cell.value = hyperlink;
+            });
+
+            // Guardar el archivo Excel
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'datos.xlsx');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+    ,closed() {
             this.$emit('update-view-table', false);
         }   
     },
