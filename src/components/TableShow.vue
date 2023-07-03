@@ -21,6 +21,7 @@
                 <th>Soporte</th>
                 <th>Categoría</th>
                 <th>VP</th>
+                <th>Audiencia</th>
                 <th>Titular</th>
                 <th>Relevancia</th>
                 <th>Fotografía</th>
@@ -37,6 +38,7 @@
                 <td>{{ item.p_or_d }}</td>
                 <td>{{ item.categoria }}</td>
                 <td>{{ item.vp }}</td>
+                <td>{{ item.audiencia.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') }}</td>
                 <td>{{ item.is_in_title }}</td>
                 <td>{{ item.custom_relevancia }}</td>
                 <td>{{ item.is_in_picture }}</td>
@@ -86,6 +88,7 @@ export default {
                 'Soporte',
                 'Categoría',
                 'Valor Publicitario',
+                'Audiencia',
                 'En fotografía',
                 'Relevancia',
                 'En titular',
@@ -140,9 +143,11 @@ export default {
 
             // Establecer formato de celda para los campos "Valor Publicitario" y "Valor Comunicación"
             const vpColumnIndex = this.thColumns.indexOf('Valor Publicitario') + 1;
+            const audienciaIndex = this.thColumns.indexOf('Audiencia') + 1;
             const vcColumnIndex = this.thColumns.indexOf('Valor Comunicación') + 1;
             const rvColumnIndex = this.thColumns.indexOf('Relevancia') + 1;
             sheet.getColumn(vpColumnIndex).numFmt = '#,##0 "€"';
+            sheet.getColumn(audienciaIndex).numFmt = '#,##0';
             sheet.getColumn(vcColumnIndex).numFmt = '#,##0 "€"';
             sheet.getColumn(rvColumnIndex).numFmt = '0.0';
 
