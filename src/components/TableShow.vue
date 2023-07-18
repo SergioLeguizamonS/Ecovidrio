@@ -38,7 +38,7 @@
                 <td>{{ item.p_or_d }}</td>
                 <td>{{ item.categoria }}</td>
                 <td>{{ item.vp }}</td>
-                <td>{{ item.audiencia.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') }}</td>
+                <td>{{ item.audiencia?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') }}</td>
                 <td>{{ item.is_in_title }}</td>
                 <td>{{ item.custom_relevancia }}</td>
                 <td>{{ item.is_in_picture }}</td>
