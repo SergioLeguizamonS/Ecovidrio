@@ -17,15 +17,15 @@
                 <th>Medio</th>
                 <th>Titular</th>
                 <th>URL</th>
-                <th>Tema</th>
-                <th>Soporte</th>
-                <th>Categoría</th>
-                <th>VP</th>
-                <th>Audiencia</th>
+                <th>Tono</th>
+                <th>Zona geográfica</th>
+                <th>Campañas</th>
+                <th>Origen</th>
+                <th>Mensaje</th>
+                <th>Equipo</th>
                 <th>Titular</th>
-                <th>Relevancia</th>
+                <th>Espacio</th>
                 <th>Fotografía</th>
-                <th>Nuevo VC</th>
               </tr>
             </thead>
             <tbody>
@@ -34,15 +34,15 @@
                 <td>{{ item.paper }}</td>
                 <td>{{ item.title }}</td>
                 <td><a :href="item.article_url" target="_blank">{{ item.article_url}}</a></td>
-                <td>{{ item.tema}}</td>
-                <td>{{ item.p_or_d }}</td>
-                <td>{{ item.categoria }}</td>
-                <td>{{ item.vp }}</td>
-                <td>{{ item.audiencia?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') }}</td>
+                <td>{{ item.tono }}</td>
+                <td>{{ }}</td>
+                <td>{{ item.campana }}</td>
+                <td>{{ item.origen }}</td>
+                <td>{{ item.mensaje }}</td>
+                <td>{{ }}</td>
                 <td>{{ item.is_in_title }}</td>
-                <td>{{ item.custom_relevancia }}</td>
+                <td>{{ }}</td>
                 <td>{{ item.is_in_picture }}</td>
-                <td>{{ item.vc }}</td>
               </tr>
             </tbody>
         </table>

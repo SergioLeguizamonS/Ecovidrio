@@ -24,24 +24,6 @@
                 <img class="loading" src="../assets/spinner.gif" alt="loading">
             </div>                
         </div>
-
-        <!-- <div v-if="!viewTable||empty" class="table">
-            <div class="validate">
-                <img src="../assets/idea.png" alt="idea">
-                <h2>No hay datos que mostrar.</h2>
-                <h3>Selecciona un rango de fechas y temas para validar.</h3>
-            </div>
-        </div>
-        <div v-else class="layer_table">
-            <div v-if="myRows.length">
-                <TableShow @update-view-table="updateVueTable" :myRows="myRows"/>
-            </div>
-            <div class="table-container" v-else>
-                <div class="loader">
-                    <img class="loading" src="../assets/spinner.gif" alt="loading">
-                </div>
-            </div>
-        </div> -->
     </div>
 </template>
 

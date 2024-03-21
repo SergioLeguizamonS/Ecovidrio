@@ -1,7 +1,7 @@
 <template>
     <header>
       <div class="logo">
-        <img src="../assets/parques_reunidos.jpg" alt="logo" @click="reload">
+        <img src="../assets/ecovidrio.png" alt="logo" @click="reload">
       </div>
     </header>
 </template>

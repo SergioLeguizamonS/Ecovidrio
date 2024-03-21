@@ -18,6 +18,6 @@ export default {
     padding: 0;
     margin: 0;
     font-family: sans-serif;
-    background: #fcb90a;
+    background: #008f36;
   }
 </style>

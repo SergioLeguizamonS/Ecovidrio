@@ -47,7 +47,7 @@ export default {
        if($event) this.myRows = []
     },
     sendData(subclient_id) {
-      axios.post('https://epservices.hallon.es/Parques_reunidos/getTemas.php', {
+      axios.post('https://epservices.hallon.es/Ecovidrio/getTemas.php', {
         subclient_id: subclient_id
       }).then(response => {
         const data = response.data;
@@ -64,7 +64,7 @@ export default {
       this.myRows = [];
       this.empty = false;
 
-      axios.post('https://epservices.hallon.es/Parques_reunidos/getCompanies.php', {
+      axios.post('https://epservices.hallon.es/Ecovidrio/getCompanies.php', {
         selectedTemas: datos.selectedThemes,
         startDate: datos.startDate,
         endDate: datos.endDate

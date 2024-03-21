@@ -78,6 +78,7 @@
         },
         methods: {
             submitForm() {
+                console.log(this.selectedThemes);
                 if (this.validarDatos()) {
                     // Hacer algo con los datos enviados
 
@@ -177,14 +178,14 @@
     font-size: 16px;
     border-radius: 5px;
     border: none;
-    background-color: #1645a1;
+    background-color: #005645;
     color: #fff;
     cursor: pointer;
     margin-bottom: 20px;
   }
   
   .btn:hover {
-    background-color: #1645a1;
+    background-color: hsl(168, 100%, 29%);
   }
   .left {
     margin-left: 24px;
